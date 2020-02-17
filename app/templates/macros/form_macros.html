@@ -149,3 +149,23 @@
         {{ field(placeholder=field.label.text) }}
     {% endif %}
 {% endmacro %}
+
+{% macro show_comments(comments, level=1) %}
+    {% for comment in comments%}
+        <div class="ui message" style="background:rgb({{ 255 - (level * 6)}}, {{ 255 - (level * 3) }}, {{ 255 - (level * 2) }})">
+                <div class="header">
+                    Author: {{ comment.author }}; Created: {{ comment.created_utc }}
+                </div>
+                <p>
+                   {{ comment.get_unescaped_body() }}
+                </p>
+            </div>
+
+
+            {% if comment.get_children_count() >= 1 %}
+                <div class="ui message">
+                {{ show_comments(comment.get_children(), level + 1) }}
+                </div>
+            {% endif %}
+    {% endfor %}
+{% endmacro %}

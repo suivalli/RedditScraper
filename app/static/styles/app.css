@@ -1,25 +1,27 @@
-@media -sass-debug-info{filename{}line{font-family:\000037}}
+/* line 7, ../../PyCharmProjects/RedditScraper/app/assets/styles/app.scss */
 nav {
   margin-bottom: 40px !important;
 }
 
-@media -sass-debug-info{filename{}line{font-family:\0000312}}
+/* line 12, ../../PyCharmProjects/RedditScraper/app/assets/styles/app.scss */
 .ui.fixed.main.menu .right.menu > .item:last-of-type {
   border-right: 1px solid rgba(34, 36, 38, 0.0980392);
 }
 
-@media -sass-debug-info{filename{}line{font-family:\0000318}}
+/* line 18, ../../PyCharmProjects/RedditScraper/app/assets/styles/app.scss */
 nav .mobile.only.row .ui.vertical.menu {
   margin-top: 40px;
   display: none;
 }
 
-@media -sass-debug-info{filename{}line{font-family:\0000325}}
+/* line 25, ../../PyCharmProjects/RedditScraper/app/assets/styles/app.scss */
 .flashes > .ui.message:last-of-type {
   margin-bottom: 2rem;
 }
 
-@media -sass-debug-info{filename{}line{font-family:\0000330}}
+/* line 30, ../../PyCharmProjects/RedditScraper/app/assets/styles/app.scss */
 table.selectable tr:hover {
   cursor: pointer !important;
 }
+
+/*# sourceMappingURL=app.css.map */

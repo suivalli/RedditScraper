@@ -1,0 +1,148 @@
+{% extends 'layouts/base.html' %}
+{% import 'macros/form_macros.html' as f %}
+{% import 'macros/check_password.html' as check %}
+
+{% block custom_head_tags %}
+ <script type="text/javascript">
+ {% if id %}
+     $(document).ready(function() {
+         $( "#txt" ).click(function() {
+            $( "#txt_icon" ).toggleClass("loading");
+            $( "#txt" ).toggleClass("disabled");
+          $.post("txt", { id:"{{ id }}", csrf_token: "{{ csrf_token()|safe }}" }
+          ).done(function ( data ){
+            $( "#txt_icon" ).toggleClass("loading");
+            $( "#txt" ).toggleClass("disabled");
+            var text = new Blob([data], {type: 'text/plain'});
+            var a = document.createElement('a');
+            var url = window.URL.createObjectURL(text);
+            a.href= url;
+            a.download = '{{ id }}.txt';
+            document.body.append(a);
+            a.click();
+            a.remove()
+            window.URL.revokeObjectURL(url);
+          })
+        });
+    });
+
+    $(document).ready(function() {
+         $( "#pdf" ).click(function() {
+            $( "#pdf_icon" ).toggleClass("loading");
+            $( "#pdf" ).toggleClass("disabled");
+          $.post("pdf", { id:"{{ id }}", csrf_token: "{{ csrf_token()|safe }}" }
+          ).done(function ( data ){
+            $( "#pdf_icon" ).toggleClass("loading");
+            $( "#pdf" ).toggleClass("disabled");
+            var text = new Blob([data], {type: 'application/pdf'});
+            var a = document.createElement('a');
+            var url = window.URL.createObjectURL(text);
+            a.href= url;
+            a.download = '{{ id }}.pdf';
+            document.body.append(a);
+            a.click();
+            a.remove()
+            window.URL.revokeObjectURL(url);
+          })
+        });
+    });
+
+    $(document).ready(function() {
+         $( "#csv" ).click(function() {
+            $( "#csv_icon" ).toggleClass("loading");
+            $( "#csv" ).toggleClass("disabled");
+          $.post("csv", { id:"{{ id }}", csrf_token: "{{ csrf_token()|safe }}" }
+          ).done(function ( data ){
+            $( "#csv_icon" ).toggleClass("loading");
+            $( "#csv" ).toggleClass("disabled");
+            var text = new Blob([data], {type: 'text/csv'});
+            var a = document.createElement('a');
+            var url = window.URL.createObjectURL(text);
+            a.href= url;
+            a.download = '{{ id }}.csv';
+            document.body.append(a);
+            a.click();
+            a.remove()
+            window.URL.revokeObjectURL(url);
+          })
+        });
+    });
+{% endif %}
+ </script>
+
+{% endblock %}
+
+{% block content %}
+    <div class="ui stackable centered grid container">
+        <div class="sixteen wide column">
+            <a class="ui basic compact button" href="{{ url_for('admin.index') }}">
+                <i class="caret left icon"></i>
+                Back to dashboard
+            </a>
+            <h2 class="ui header">
+                Show posts for id
+            </h2>
+
+            {% set flashes = {
+                'error':   get_flashed_messages(category_filter=['form-error']),
+                'warning': get_flashed_messages(category_filter=['form-check-email']),
+                'info':    get_flashed_messages(category_filter=['form-info']),
+                'success': get_flashed_messages(category_filter=['form-success'])
+            } %}
+
+            {{ f.begin_form(form, flashes) }}
+
+                {{ f.render_form_field(form.submission_id) }}
+
+
+                {{ f.form_message(flashes['error'], header='Something went wrong.', class='error') }}
+                {{ f.form_message(flashes['warning'], header='Check your email.', class='warning') }}
+                {{ f.form_message(flashes['info'], header='Information', class='info') }}
+                {{ f.form_message(flashes['success'], header='Success!', class='success') }}
+
+                {% for field in form | selectattr('type', 'equalto', 'SubmitField') %}
+                    {{ f.render_form_field(field) }}
+                {% endfor %}
+
+            {{ f.end_form() }}
+
+
+
+
+        {% if tl_comments %}
+            <div class="html ui top attached segment">
+                <div id="pdf" class="ui left labeled button" tabindex="0">
+                  <a class="ui basic label">
+                    PDF
+                  </a>
+                  <div class="ui icon button">
+                    <i id="pdf_icon" class="file pdf icon"></i>
+                  </div>
+                </div>
+                <div download id="txt" class="ui left labeled button" tabindex="0">
+                  <a  class="ui basic label">
+                    TXT
+                  </a>
+                  <div class="ui icon button">
+                    <i id = "txt_icon" class="file alternate icon"></i>
+                  </div>
+                </div>
+                <div download id="csv" class="ui left labeled button" tabindex="0">
+                  <a  class="ui basic label">
+                    CSV
+                  </a>
+                  <div class="ui icon button">
+                    <i id = "csv_icon" class="file alternate icon"></i>
+                  </div>
+                </div>
+                </div>
+
+                <div class="ui segments">
+                {{ f.show_comments(tl_comments.items) }}
+                </div>
+            {% if tl_comments.has_prev %}<a href="{{ url_for('main.read', page=tl_comments.prev_num, id=id) }}">&lt;&lt; Newer posts</a>{% else %}&lt;&lt; Newer posts{% endif %} |
+            {% if tl_comments.has_next %}<a href="{{ url_for('main.read', page=tl_comments.next_num, id=id) }}">Older posts &gt;&gt;</a>{% else %}Older posts &gt;&gt;{% endif %}
+        {% endif %}
+            </div>
+    </div>
+{% endblock %}

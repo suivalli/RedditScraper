@@ -67,6 +67,10 @@ class Config:
     RQ_DEFAULT_PASSWORD = url.password
     RQ_DEFAULT_DB = 0
 
+    REDDIT_CLIENT_ID = os.environ.get('REDDIT_CLIENT_ID')
+    REDDIT_SECRET = os.environ.get('REDDIT_SECRET')
+    REDIRECT_URI = os.environ.get('REDIRECT_URI')
+
     @staticmethod
     def init_app(app):
         pass

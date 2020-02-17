@@ -1,0 +1,32 @@
+{% extends 'layouts/base.html' %}
+{% import 'macros/form_macros.html' as f %}
+{% import 'macros/check_password.html' as check %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+    <div class="ui stackable centered grid container">
+        <table class ="ui celled table">
+            <thead>
+            <tr>
+                <th>Author</th>
+                <th>Body</th>
+                <th>Created</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for comment in tl_comments %}
+            <tr>
+                <td data-label="Author">{{ comment.author }}</td>
+                <td data-label="Body"> {{ comment.body }}</td>
+                <td data-label="Created"> {{ comment.created }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+
+
